@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BRKS Education — Shape Tomorrow</title>
+  <title>BRKS Education</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,576 +14,387 @@
       --yellow: #FEE064;
       --blue:   #0056B8;
       --black:  #060609;
-      --coral:  #FE8160;
-      --mint:   #AEF5E2;
       --white:  #ffffff;
     }
 
     body {
-      font-family: 'DM Sans', system-ui, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
-      background: var(--black);
-      color: var(--black);
-    }
-
-    /* ── Layout ──────────────────────────────── */
-    .page {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      min-height: 100vh;
     }
 
-    /* ── LEFT / Hero panel ───────────────────── */
+    /* ── LEFT panel ─────────────────────────────── */
     .hero {
-      background: var(--yellow);
-      padding: 56px 52px;
+      background: var(--black);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      padding: 52px 64px;
       position: relative;
       overflow: hidden;
     }
 
-    /* geometric accent — large circle */
-    .hero::before {
-      content: '';
-      position: absolute;
-      width: 420px;
-      height: 420px;
-      border-radius: 50%;
-      border: 56px solid rgba(6,6,9,0.07);
-      bottom: -120px;
-      left: -80px;
-      pointer-events: none;
-    }
-    /* small square accent */
+    /* subtle yellow glow */
     .hero::after {
       content: '';
       position: absolute;
-      width: 90px;
-      height: 90px;
-      background: rgba(6,6,9,0.06);
-      border-radius: 18px;
-      top: 60px;
-      right: 40px;
-      transform: rotate(18deg);
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: var(--yellow);
+      opacity: 0.04;
+      bottom: -200px; right: -160px;
       pointer-events: none;
     }
 
-    .logo-wrap {
+    .logo {
       display: flex;
       align-items: center;
-      gap: 10px;
-      position: relative;
+      gap: 14px;
       z-index: 1;
     }
-    .logo-box {
-      width: 44px;
-      height: 44px;
-      background: var(--black);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .logo img {
+      height: 32px;
+      width: auto;
+      filter: brightness(0) invert(1); /* makes any dark logo white */
     }
-    .logo-box span {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
-      font-size: 1.1rem;
+    .logo-fallback {
+      font-size: 1.5rem;
+      font-weight: 900;
       color: var(--yellow);
-      letter-spacing: -0.03em;
+      letter-spacing: -0.04em;
+      line-height: 1;
     }
-    .logo-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--black);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    .logo-divider {
+      width: 1px; height: 20px;
+      background: rgba(255,255,255,0.15);
     }
-
-    .hero-body {
-      position: relative;
-      z-index: 1;
-    }
-
-    .tagline-chip {
-      display: inline-block;
-      background: var(--black);
-      color: var(--yellow);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 0.78rem;
+    .logo-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.35);
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 20px;
-      margin-bottom: 20px;
     }
 
+    .hero-body { z-index: 1; }
+
     .hero h1 {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(3.2rem, 4.5vw, 5rem);
       font-weight: 800;
-      font-size: clamp(2.4rem, 4vw, 3.4rem);
-      line-height: 1.08;
-      color: var(--black);
-      margin-bottom: 20px;
+      line-height: 1.0;
+      color: var(--white);
+      letter-spacing: -0.04em;
+      margin-bottom: 24px;
     }
     .hero h1 em {
       font-style: normal;
-      color: var(--blue);
+      color: var(--yellow);
     }
 
-    .hero-desc {
+    .hero p {
       font-size: 1rem;
-      line-height: 1.65;
-      color: rgba(6,6,9,0.72);
-      max-width: 380px;
-      margin-bottom: 36px;
-    }
-
-    /* benefit list */
-    .benefits {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .benefits li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 0.92rem;
-      font-weight: 500;
-      color: var(--black);
-      line-height: 1.45;
-    }
-    .benefit-icon {
-      width: 26px;
-      height: 26px;
-      background: var(--black);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .benefit-icon svg {
-      width: 13px;
-      height: 13px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.6;
+      max-width: 300px;
     }
 
     .hero-footer {
-      position: relative;
       z-index: 1;
-      display: flex;
-      align-items: center;
-      gap: 14px;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.18);
+      letter-spacing: 0.04em;
     }
-    .avatars {
-      display: flex;
-    }
-    .avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 2px solid var(--yellow);
-      background: var(--blue);
-      margin-left: -10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--white);
-    }
-    .avatar:first-child { margin-left: 0; background: #1a6fcc; }
-    .avatar:nth-child(2) { background: #0056B8; }
-    .avatar:nth-child(3) { background: #003d85; }
-    .social-proof {
-      font-size: 0.82rem;
-      color: rgba(6,6,9,0.65);
-      font-weight: 500;
-    }
-    .social-proof strong { color: var(--black); }
 
-    /* ── RIGHT / Form panel ──────────────────── */
+    /* ── RIGHT panel ────────────────────────────── */
     .form-panel {
-      background: #f4f5f7;
+      background: var(--white);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 48px 40px;
+      padding: 52px 64px;
     }
 
-    .card {
-      background: var(--white);
-      border-radius: 20px;
-      box-shadow: 0 4px 32px rgba(6,6,9,0.10);
-      padding: 44px 40px;
+    .form-wrap {
       width: 100%;
-      max-width: 440px;
+      max-width: 360px;
     }
 
-    .card-header { margin-bottom: 28px; }
-    .card-header h2 {
-      font-family: 'Barlow Condensed', sans-serif;
+    .form-heading {
+      font-size: 1.35rem;
       font-weight: 700;
-      font-size: 1.55rem;
       color: var(--black);
-      margin-bottom: 6px;
+      letter-spacing: -0.025em;
+      margin-bottom: 4px;
     }
-    .card-header p { color: #6b7280; font-size: 0.9rem; }
+    .form-sub {
+      font-size: 0.85rem;
+      color: #6e6e73;
+      margin-bottom: 28px;
+    }
 
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-    .field { display: flex; flex-direction: column; margin-bottom: 16px; }
+    .field { display: flex; flex-direction: column; margin-bottom: 12px; }
     .field label {
-      font-size: 0.82rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      color: #374151;
+      color: #1d1d1f;
       margin-bottom: 5px;
+      letter-spacing: 0.01em;
     }
     .field input,
     .field select {
-      border: 1.5px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 11px 13px;
-      font-size: 0.93rem;
+      border: 1px solid #d2d2d7;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.88rem;
       color: var(--black);
-      background: var(--white);
+      background: #fbfbfd;
       font-family: inherit;
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .field select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 13px center;
-      padding-right: 34px;
-      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
     .field input:focus,
     .field select:focus {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(0,86,184,0.12);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(0,86,184,0.1);
     }
-    .field input.error { border-color: #ef4444; }
-    .field input.error:focus { box-shadow: 0 0 0 3px rgba(239,68,68,0.12); }
-
-    .field-error {
-      font-size: 0.76rem;
-      color: #ef4444;
-      margin-top: 4px;
-      display: none;
+    .field select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%236e6e73' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 30px;
+      cursor: pointer;
     }
+    .field input.error { border-color: #ff3b30; }
+    .field input.error:focus { box-shadow: 0 0 0 3px rgba(255,59,48,0.12); }
+    .field-error { font-size: 0.71rem; color: #ff3b30; margin-top: 3px; display: none; }
     .field-error.visible { display: block; }
 
     button[type="submit"] {
       width: 100%;
-      padding: 13px;
+      padding: 12px;
       background: var(--blue);
       color: var(--white);
       border: none;
-      border-radius: 10px;
-      font-size: 0.97rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      margin-top: 4px;
+      margin-top: 8px;
       letter-spacing: 0.01em;
+      transition: background 0.15s;
     }
-    button[type="submit"]:hover { background: #004fa8; }
+    button[type="submit"]:hover { background: #0047a0; }
     button[type="submit"]:active { transform: scale(0.99); }
-    button[type="submit"]:disabled { opacity: 0.6; cursor: not-allowed; }
+    button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; }
 
     .form-note {
       text-align: center;
-      margin-top: 14px;
-      font-size: 0.78rem;
-      color: #9ca3af;
+      margin-top: 16px;
+      font-size: 0.72rem;
+      color: #aeaeb2;
     }
-    .form-note a { color: #9ca3af; text-decoration: underline; }
+    .form-note a { color: #aeaeb2; }
     .form-note a:hover { color: var(--blue); }
 
-    /* ── Success state ───────────────────────── */
+    /* ── Success ────────────────────────────────── */
     .success-panel {
       display: none;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: 12px 0;
     }
     .success-panel.visible { display: flex; }
 
-    .checkmark {
-      width: 72px;
-      height: 72px;
+    .check-circle {
+      width: 60px; height: 60px;
       border-radius: 50%;
       background: var(--blue);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 24px;
-      animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      animation: pop 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
     }
-    .checkmark svg { width: 34px; height: 34px; }
-
-    @keyframes pop {
-      from { transform: scale(0); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
-    }
+    .check-circle svg { width: 28px; height: 28px; }
+    @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
     .success-panel h2 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.6rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--black);
-      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
     }
-    .success-panel p {
-      color: #6b7280;
-      font-size: 0.93rem;
-      line-height: 1.6;
-    }
+    .success-panel p { font-size: 0.85rem; color: #6e6e73; line-height: 1.6; }
     .another-btn {
-      margin-top: 26px;
+      margin-top: 20px;
       background: none;
-      border: 1.5px solid var(--blue);
+      border: 1px solid #d2d2d7;
       color: var(--blue);
-      border-radius: 10px;
-      padding: 10px 24px;
-      font-size: 0.88rem;
-      font-weight: 600;
+      border-radius: 8px;
+      padding: 9px 22px;
+      font-size: 0.83rem;
+      font-weight: 500;
       font-family: inherit;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      transition: background 0.15s;
     }
-    .another-btn:hover { background: var(--blue); color: var(--white); }
+    .another-btn:hover { background: #f5f5f7; }
 
-    /* ── Mobile ──────────────────────────────── */
+    /* ── Mobile ─────────────────────────────────── */
     @media (max-width: 800px) {
-      .page { grid-template-columns: 1fr; }
-
-      .hero {
-        padding: 40px 28px 48px;
-        min-height: auto;
-      }
-      .hero::before { width: 260px; height: 260px; bottom: -80px; left: -60px; border-width: 40px; }
-      .hero h1 { font-size: 2.2rem; }
-      .hero-footer { margin-top: 32px; }
-
-      .form-panel { padding: 32px 20px 48px; }
-      .card { padding: 32px 24px; }
+      body { grid-template-columns: 1fr; }
+      .hero { padding: 40px 32px 52px; }
+      .hero h1 { font-size: 3rem; }
+      .form-panel { padding: 44px 32px 56px; }
+      .form-wrap { max-width: 100%; }
     }
-
     @media (max-width: 480px) {
       .row { grid-template-columns: 1fr; gap: 0; }
+      .hero { padding: 32px 24px 40px; }
+      .form-panel { padding: 36px 24px 48px; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
 
-    <!-- LEFT: Hero / branding -->
-    <section class="hero">
-      <div class="logo-wrap">
-        <div class="logo-box"><span>BRK</span></div>
-        <span class="logo-name">BRKS Education</span>
-      </div>
+  <!-- LEFT -->
+  <section class="hero">
+    <div class="logo">
+      <img src="/static/brks-logo.png" alt="BRKS" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="logo-fallback" style="display:none">brks</span>
+      <div class="logo-divider"></div>
+      <span class="logo-label">Education</span>
+    </div>
 
-      <div class="hero-body">
-        <span class="tagline-chip">Shape Tomorrow</span>
-        <h1>Unlock Your<br>Path to <em>Success</em></h1>
-        <p class="hero-desc">
-          Join thousands of students who have transformed their futures with BRKS Education.
-          Our expert-led programmes are designed to give you the skills, confidence, and
-          connections you need to thrive.
-        </p>
+    <div class="hero-body">
+      <h1>Shape<br><em>Tomorrow.</em></h1>
+      <p>Take the first step toward the future you've been building.</p>
+    </div>
 
-        <ul class="benefits">
-          <li>
-            <span class="benefit-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#FEE064" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </span>
-            Personalised guidance from industry experts
-          </li>
-          <li>
-            <span class="benefit-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#FEE064" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </span>
-            Flexible programmes that fit around your life
-          </li>
-          <li>
-            <span class="benefit-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#FEE064" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </span>
-            Exclusive resources, events, and networking
-          </li>
-          <li>
-            <span class="benefit-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#FEE064" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </span>
-            A dedicated team with you every step of the way
-          </li>
-        </ul>
-      </div>
+    <div class="hero-footer">© 2025 BRKS Education</div>
+  </section>
 
-      <div class="hero-footer">
-        <div class="avatars">
-          <div class="avatar">AS</div>
-          <div class="avatar">MK</div>
-          <div class="avatar">RJ</div>
-        </div>
-        <p class="social-proof"><strong>500+ students</strong> enrolled this year</p>
-      </div>
-    </section>
+  <!-- RIGHT -->
+  <section class="form-panel">
+    <div class="form-wrap">
 
-    <!-- RIGHT: Form card -->
-    <section class="form-panel">
-      <div class="card">
+      <div id="form-view">
+        <div class="form-heading">Get in touch</div>
+        <div class="form-sub">We'll reach out within 24 hours.</div>
 
-        <!-- Form view -->
-        <div id="form-view">
-          <div class="card-header">
-            <h2>Get in Touch</h2>
-            <p>Fill in your details and we'll reach out shortly.</p>
+        <form id="lead-form" novalidate>
+          <div class="row">
+            <div class="field">
+              <label for="first_name">First name</label>
+              <input type="text" id="first_name" name="first_name" placeholder="Jane" autocomplete="given-name" />
+              <span class="field-error" id="err-first_name"></span>
+            </div>
+            <div class="field">
+              <label for="last_name">Last name</label>
+              <input type="text" id="last_name" name="last_name" placeholder="Doe" autocomplete="family-name" />
+              <span class="field-error" id="err-last_name"></span>
+            </div>
           </div>
 
-          <form id="lead-form" novalidate>
-            <div class="row">
-              <div class="field">
-                <label for="first_name">First Name</label>
-                <input type="text" id="first_name" name="first_name" placeholder="Jane" autocomplete="given-name" />
-                <span class="field-error" id="err-first_name"></span>
-              </div>
-              <div class="field">
-                <label for="last_name">Last Name</label>
-                <input type="text" id="last_name" name="last_name" placeholder="Doe" autocomplete="family-name" />
-                <span class="field-error" id="err-last_name"></span>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email" />
-              <span class="field-error" id="err-email"></span>
-            </div>
-
-            <div class="field">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" autocomplete="tel" />
-              <span class="field-error" id="err-phone"></span>
-            </div>
-
-            <div class="field">
-              <label for="source">How did you hear about us?</label>
-              <select id="source" name="source">
-                <option value="Direct">Direct</option>
-                <option value="Google Search">Google Search</option>
-                <option value="Social Media">Social Media</option>
-                <option value="Referral">Referral</option>
-                <option value="Email Campaign">Email Campaign</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            <!-- UTM hidden fields — populated from URL params on page load -->
-            <input type="hidden" name="utm_source"   id="utm_source" />
-            <input type="hidden" name="utm_medium"   id="utm_medium" />
-            <input type="hidden" name="utm_campaign" id="utm_campaign" />
-            <input type="hidden" name="utm_term"     id="utm_term" />
-            <input type="hidden" name="utm_content"  id="utm_content" />
-
-            <button type="submit" id="submit-btn">Get Started</button>
-          </form>
-
-          <p class="form-note">
-            We respect your privacy. No spam, ever. &nbsp;·&nbsp;
-            <a href="/dashboard">Admin dashboard →</a>
-          </p>
-        </div>
-
-        <!-- Success view -->
-        <div class="success-panel" id="success-view">
-          <div class="checkmark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email" />
+            <span class="field-error" id="err-email"></span>
           </div>
-          <h2>You're all set!</h2>
-          <p>Thanks for reaching out. We've saved your details<br>and will be in touch with you soon.</p>
-          <button class="another-btn" id="another-btn">Submit another response</button>
-        </div>
 
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" autocomplete="tel" />
+            <span class="field-error" id="err-phone"></span>
+          </div>
+
+          <div class="field">
+            <label for="source">How did you find us?</label>
+            <select id="source" name="source">
+              <option value="Direct">Direct</option>
+              <option value="Google Search">Google Search</option>
+              <option value="Social Media">Social Media</option>
+              <option value="Referral">Referral</option>
+              <option value="Email Campaign">Email Campaign</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <input type="hidden" name="utm_source"   id="utm_source" />
+          <input type="hidden" name="utm_medium"   id="utm_medium" />
+          <input type="hidden" name="utm_campaign" id="utm_campaign" />
+          <input type="hidden" name="utm_term"     id="utm_term" />
+          <input type="hidden" name="utm_content"  id="utm_content" />
+
+          <button type="submit" id="submit-btn">Get Started</button>
+        </form>
+
+        <p class="form-note"><a href="/dashboard">Admin →</a></p>
       </div>
-    </section>
 
-  </div>
+      <div class="success-panel" id="success-view">
+        <div class="check-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h2>You're all set.</h2>
+        <p>We've received your details<br>and will be in touch soon.</p>
+        <button class="another-btn" id="another-btn">Submit another</button>
+      </div>
+
+    </div>
+  </section>
 
   <script>
+    (function captureUTM() {
+      const keys = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+      const p = new URLSearchParams(window.location.search);
+      keys.forEach(k => {
+        const v = p.get(k);
+        if (v) sessionStorage.setItem(k, v);
+        const el = document.getElementById(k);
+        if (el) el.value = sessionStorage.getItem(k) || '';
+      });
+    })();
+
     const form        = document.getElementById('lead-form');
     const formView    = document.getElementById('form-view');
     const successView = document.getElementById('success-view');
     const submitBtn   = document.getElementById('submit-btn');
     const anotherBtn  = document.getElementById('another-btn');
-
-    // Capture UTM params from URL and persist in sessionStorage
-    (function captureUTM() {
-      const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
-      const params   = new URLSearchParams(window.location.search);
-      UTM_KEYS.forEach(key => {
-        const val = params.get(key);
-        if (val) sessionStorage.setItem(key, val);
-        const stored = sessionStorage.getItem(key) || '';
-        const el = document.getElementById(key);
-        if (el) el.value = stored;
-      });
-    })();
-
-    const fields = ['first_name', 'last_name', 'email', 'phone'];
+    const fields      = ['first_name','last_name','email','phone'];
 
     function clearErrors() {
       fields.forEach(f => {
         document.getElementById(f).classList.remove('error');
-        const err = document.getElementById('err-' + f);
-        err.textContent = '';
-        err.classList.remove('visible');
+        const e = document.getElementById('err-'+f);
+        e.textContent = ''; e.classList.remove('visible');
       });
     }
-
     function showErrors(errors) {
-      Object.entries(errors).forEach(([field, msg]) => {
-        const input = document.getElementById(field);
-        const err   = document.getElementById('err-' + field);
-        if (input) input.classList.add('error');
-        if (err)   { err.textContent = msg; err.classList.add('visible'); }
+      Object.entries(errors).forEach(([f, msg]) => {
+        const inp = document.getElementById(f);
+        const err = document.getElementById('err-'+f);
+        if (inp) inp.classList.add('error');
+        if (err) { err.textContent = msg; err.classList.add('visible'); }
       });
     }
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', async e => {
       e.preventDefault();
       clearErrors();
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Submitting…';
-
-      const body = new FormData(form);
-
+      submitBtn.textContent = 'Sending…';
       try {
-        const res  = await fetch('/submit', { method: 'POST', body });
+        const res  = await fetch('/submit', { method: 'POST', body: new FormData(form) });
         const data = await res.json();
-
         if (data.ok) {
           formView.style.display = 'none';
           successView.classList.add('visible');
@@ -599,8 +410,7 @@
     });
 
     anotherBtn.addEventListener('click', () => {
-      form.reset();
-      clearErrors();
+      form.reset(); clearErrors();
       successView.classList.remove('visible');
       formView.style.display = '';
     });
