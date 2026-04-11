@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Sequences</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f3f4f6; color: #1f2937; min-height: 100vh; }
+
+    .header {
+      background: #fff; border-bottom: 1px solid #e5e7eb; padding: 0 32px;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .logo { width: 36px; height: 36px; background: linear-gradient(135deg,#667eea,#764ba2); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .logo svg { width: 18px; height: 18px; }
+    .header h1 { font-size: 1.1rem; font-weight: 700; color: #111827; }
+    .nav { display: flex; gap: 8px; }
+    .nav a { font-size: 0.85rem; color: #6b7280; text-decoration: none; padding: 6px 12px; border-radius: 8px; font-weight: 500; }
+    .nav a:hover { background: #f3f4f6; color: #111827; }
+    .nav a.active { background: #ede9fe; color: #7c3aed; }
+
+    .main { max-width: 1000px; margin: 0 auto; padding: 32px 24px; }
+
+    .page-header { margin-bottom: 28px; }
+    .page-header h2 { font-size: 1.4rem; font-weight: 700; color: #111827; }
+    .page-header p { color: #6b7280; font-size: 0.9rem; margin-top: 4px; }
+
+    /* timeline */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item { display: flex; gap: 24px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; width: 48px; flex-shrink: 0; }
+    .timeline-dot {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+    }
+    .timeline-line { width: 2px; background: #e5e7eb; flex: 1; min-height: 24px; margin: 4px 0; }
+    .timeline-item:last-child .timeline-line { display: none; }
+
+    .card {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+      padding: 24px; flex: 1; margin-bottom: 24px;
+    }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; gap: 16px; }
+    .card-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .template-name { font-size: 1rem; font-weight: 700; color: #111827; }
+    .delay-badge {
+      font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+      background: #ede9fe; color: #7c3aed;
+    }
+
+    /* stats row */
+    .stats-row { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+    .mini-stat { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px 16px; min-width: 90px; }
+    .mini-stat-val { font-size: 1.4rem; font-weight: 700; color: #111827; line-height: 1; }
+    .mini-stat-label { font-size: 0.72rem; color: #9ca3af; margin-top: 3px; font-weight: 500; }
+    .mini-stat.green .mini-stat-val { color: #059669; }
+    .mini-stat.purple .mini-stat-val { color: #7c3aed; }
+
+    /* form fields */
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 0.82rem; font-weight: 600; color: #374151; margin-bottom: 5px; }
+    .field input, .field textarea {
+      width: 100%; padding: 10px 12px; border: 1.5px solid #e5e7eb; border-radius: 9px;
+      font-size: 0.9rem; color: #111827; outline: none; font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .field input:focus, .field textarea:focus { border-color: #667eea; }
+    .field textarea { resize: vertical; min-height: 160px; font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.5; }
+
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; flex-wrap: wrap; gap: 12px; }
+    .toggle-wrap { display: flex; align-items: center; gap: 8px; }
+    .toggle-wrap label { font-size: 0.85rem; color: #374151; font-weight: 500; cursor: pointer; }
+    .toggle { position: relative; width: 40px; height: 22px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; inset: 0; background: #d1d5db; border-radius: 22px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .slider::before {
+      content: ''; position: absolute; width: 16px; height: 16px; background: #fff;
+      border-radius: 50%; left: 3px; top: 3px; transition: transform 0.2s;
+    }
+    .toggle input:checked + .slider { background: #667eea; }
+    .toggle input:checked + .slider::before { transform: translateX(18px); }
+
+    .save-btn {
+      padding: 9px 22px; background: linear-gradient(135deg,#667eea,#764ba2);
+      color: #fff; border: none; border-radius: 9px; font-size: 0.88rem;
+      font-weight: 600; cursor: pointer; transition: opacity 0.2s;
+    }
+    .save-btn:hover { opacity: 0.9; }
+    .save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .save-msg { font-size: 0.82rem; color: #059669; font-weight: 500; display: none; }
+    .save-msg.visible { display: block; }
+
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid #e5e7eb; border-top-color: #667eea; border-radius: 50%; animation: spin 0.6s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading { text-align: center; padding: 60px; color: #9ca3af; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </div>
+      <h1>Email Sequences</h1>
+    </div>
+    <nav class="nav">
+      <a href="/">Form</a>
+      <a href="/dashboard">Contacts</a>
+      <a href="/sequences" class="active">Sequences</a>
+      <a href="/analytics">Analytics</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <div class="page-header">
+      <h2>Sequence Templates</h2>
+      <p>Every new contact automatically receives these emails. Edit the subject and body, then save.</p>
+    </div>
+
+    <div id="timeline" class="timeline">
+      <div class="loading"><span class="spinner"></span></div>
+    </div>
+  </main>
+
+  <script>
+    function pct(n, d) {
+      if (!d) return '0%';
+      return Math.round((n / d) * 100) + '%';
+    }
+
+    function escHtml(s) {
+      return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    async function load() {
+      const [tmplRes, analyticsRes] = await Promise.all([
+        fetch('/api/templates'),
+        fetch('/api/analytics'),
+      ]);
+      const templates = await tmplRes.json();
+      const analytics = await analyticsRes.json();
+
+      // build a stats map by template id
+      const statsMap = {};
+      (analytics.by_template || []).forEach(t => { statsMap[t.id] = t; });
+
+      const timeline = document.getElementById('timeline');
+      timeline.innerHTML = templates.map((t, i) => {
+        const s    = statsMap[t.id] || {sent:0, opened:0, clicked:0};
+        const dot  = t.delay_days === 0 ? 'Day 0' : `+${t.delay_days}d`;
+        return `
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <div class="timeline-dot">${dot}</div>
+            <div class="timeline-line"></div>
+          </div>
+          <div class="card" id="card-${t.id}">
+            <div class="card-top">
+              <div class="card-meta">
+                <span class="template-name">${escHtml(t.name)}</span>
+                <span class="delay-badge">${t.delay_days === 0 ? 'Sent immediately' : `Sent ${t.delay_days} days after sign-up`}</span>
+              </div>
+            </div>
+
+            <div class="stats-row">
+              <div class="mini-stat">
+                <div class="mini-stat-val">${s.sent}</div>
+                <div class="mini-stat-label">Sent</div>
+              </div>
+              <div class="mini-stat green">
+                <div class="mini-stat-val">${pct(s.opened, s.sent)}</div>
+                <div class="mini-stat-label">Open rate</div>
+              </div>
+              <div class="mini-stat purple">
+                <div class="mini-stat-val">${pct(s.clicked, s.sent)}</div>
+                <div class="mini-stat-label">Click rate</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-val">${s.opened}</div>
+                <div class="mini-stat-label">Opened</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-val">${s.clicked}</div>
+                <div class="mini-stat-label">Clicked</div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Subject line</label>
+              <input type="text" id="subj-${t.id}" value="${escHtml(t.subject)}" />
+            </div>
+            <div class="field">
+              <label>Email body (HTML) — use {{first_name}}, {{last_name}}, {{email}}, {{phone}}</label>
+              <textarea id="body-${t.id}">${escHtml(t.html_body)}</textarea>
+            </div>
+
+            <div class="card-footer">
+              <div class="toggle-wrap">
+                <label class="toggle">
+                  <input type="checkbox" id="active-${t.id}" ${t.active ? 'checked' : ''} />
+                  <span class="slider"></span>
+                </label>
+                <label for="active-${t.id}">Active</label>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px">
+                <span class="save-msg" id="msg-${t.id}">Saved ✓</span>
+                <button class="save-btn" id="btn-${t.id}" onclick="save(${t.id})">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    async function save(id) {
+      const btn  = document.getElementById(`btn-${id}`);
+      const msg  = document.getElementById(`msg-${id}`);
+      const subj = document.getElementById(`subj-${id}`).value;
+      const body = document.getElementById(`body-${id}`).value;
+      const active = document.getElementById(`active-${id}`).checked;
+
+      btn.disabled = true;
+      btn.textContent = 'Saving…';
+      msg.classList.remove('visible');
+
+      const res  = await fetch(`/api/templates/${id}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({subject: subj, html_body: body, active}),
+      });
+      const data = await res.json();
+
+      btn.disabled = false;
+      btn.textContent = 'Save changes';
+      if (data.ok) {
+        msg.classList.add('visible');
+        setTimeout(() => msg.classList.remove('visible'), 3000);
+      } else {
+        alert(data.error || 'Save failed.');
+      }
+    }
+
+    load();
+  </script>
+</body>
+</html>
