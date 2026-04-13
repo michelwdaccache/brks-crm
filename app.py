@@ -128,7 +128,7 @@ def init_db():
             )""")
             for col, dfn in [("source","TEXT DEFAULT 'Direct'"),("utm_source","TEXT"),
                 ("utm_medium","TEXT"),("utm_campaign","TEXT"),("utm_term","TEXT"),("utm_content","TEXT"),
-                ("institution_type","TEXT")]:
+                ("institution_type","TEXT"),("status","TEXT DEFAULT 'Lead'"),("tags","TEXT DEFAULT ''")]:
                 cur.execute(f"ALTER TABLE contacts ADD COLUMN IF NOT EXISTS {col} {dfn}")
 
             # email_templates
@@ -156,6 +156,12 @@ def init_db():
                 id SERIAL PRIMARY KEY, queue_id INTEGER NOT NULL,
                 event_type TEXT NOT NULL, url TEXT, ip TEXT, user_agent TEXT,
                 created_at TIMESTAMPTZ DEFAULT NOW()
+            )""")
+
+            # sequences
+            cur.execute("""CREATE TABLE IF NOT EXISTS sequences (
+                id SERIAL PRIMARY KEY, name TEXT NOT NULL, description TEXT DEFAULT '',
+                steps JSONB DEFAULT '[]', created_at TIMESTAMPTZ DEFAULT NOW()
             )""")
 
             # seed default templates
@@ -383,6 +389,51 @@ def api_contacts():
     return jsonify(contacts)
 
 
+# ── API: contacts update / export ────────────────────────────────────────────
+
+@app.route("/api/contacts/<int:cid>", methods=["PUT"])
+def api_contact_update(cid):
+    body = request.get_json() or {}
+    allowed = {"status", "tags"}
+    sets, params = [], []
+    for k in allowed:
+        if k in body:
+            sets.append(f"{k}=%s")
+            params.append(body[k])
+    if not sets:
+        return jsonify({"ok": False, "error": "Nothing to update"}), 422
+    params.append(cid)
+    with get_db() as conn:
+        with conn.cursor() as cur:
+            cur.execute(f"UPDATE contacts SET {','.join(sets)} WHERE id=%s", params)
+        conn.commit()
+    return jsonify({"ok": True})
+
+
+@app.route("/api/contacts/export")
+def api_contacts_export():
+    import csv, io
+    with get_db() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""SELECT first_name,last_name,email,phone,source,institution_type,
+                               status,tags,utm_source,utm_medium,utm_campaign,created_at
+                           FROM contacts ORDER BY created_at DESC""")
+            rows = cur.fetchall()
+    out = io.StringIO()
+    w = csv.writer(out)
+    w.writerow(["First Name","Last Name","Email","Phone","Source","Institution","Status",
+                "Tags","UTM Source","UTM Medium","UTM Campaign","Signed Up"])
+    for r in rows:
+        w.writerow([r["first_name"],r["last_name"],r["email"],r["phone"],
+                    r["source"] or "",r["institution_type"] or "",r["status"] or "Lead",
+                    r["tags"] or "",r["utm_source"] or "",r["utm_medium"] or "",
+                    r["utm_campaign"] or "",
+                    r["created_at"].strftime("%Y-%m-%d %H:%M") if r["created_at"] else ""])
+    out.seek(0)
+    return Response(out.getvalue(), mimetype="text/csv",
+                    headers={"Content-Disposition": "attachment; filename=contacts.csv"})
+
+
 # ── API: templates ────────────────────────────────────────────────────────────
 
 @app.route("/api/templates")
@@ -500,6 +551,59 @@ def api_analytics():
 
     return jsonify({"overall": overall, "by_template": by_template,
                     "by_day": by_day, "recent_events": events})
+
+
+# ── API: sequences ────────────────────────────────────────────────────────────
+
+@app.route("/api/sequences", methods=["GET"])
+def api_sequences_list():
+    with get_db() as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT id, name, description, steps, created_at FROM sequences ORDER BY created_at DESC")
+            rows = [dict(r) for r in cur.fetchall()]
+    for r in rows:
+        if r.get("created_at"): r["created_at"] = r["created_at"].strftime("%Y-%m-%d %H:%M")
+        if r.get("steps") is None: r["steps"] = []
+    return jsonify(rows)
+
+
+@app.route("/api/sequences", methods=["POST"])
+def api_sequences_create():
+    import json
+    body = request.get_json() or {}
+    name = (body.get("name") or "").strip()
+    if not name:
+        return jsonify({"ok": False, "error": "Name is required"}), 422
+    description = (body.get("description") or "").strip()
+    steps = body.get("steps") or []
+    with get_db() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO sequences (name, description, steps) VALUES (%s, %s, %s) RETURNING id",
+                (name, description, json.dumps(steps)),
+            )
+            new_id = cur.fetchone()["id"]
+        conn.commit()
+    return jsonify({"ok": True, "id": new_id})
+
+
+@app.route("/api/sequences/<int:sid>", methods=["PUT"])
+def api_sequences_update(sid):
+    import json
+    body = request.get_json() or {}
+    name = (body.get("name") or "").strip()
+    if not name:
+        return jsonify({"ok": False, "error": "Name is required"}), 422
+    description = (body.get("description") or "").strip()
+    steps = body.get("steps") or []
+    with get_db() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE sequences SET name=%s, description=%s, steps=%s WHERE id=%s",
+                (name, description, json.dumps(steps), sid),
+            )
+        conn.commit()
+    return jsonify({"ok": True})
 
 
 # ── Submit ────────────────────────────────────────────────────────────────────
