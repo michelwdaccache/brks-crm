@@ -19,116 +19,80 @@
       --white:  #ffffff;
     }
 
-    html, body { height: 100%; }
-
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      min-height: 100vh;
+      background: var(--yellow);
     }
 
-    /* ═══════════════════════════════════════════
-       DESKTOP layout — side by side
-    ═══════════════════════════════════════════ */
+    /* ═══════════════════════════ DESKTOP ══════════════════════════ */
     @media (min-width: 820px) {
       body {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr;
-      }
-
-      /* LEFT: sticky full-height brand panel */
-      .hero {
-        position: sticky;
-        top: 0;
         height: 100vh;
+        overflow: hidden;
       }
-
-      /* RIGHT: scrollable, centered */
+      .hero      { height: 100vh; overflow: hidden; }
       .form-panel {
-        min-height: 100vh;
+        height: 100vh;
+        overflow-y: auto;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 64px 72px;
+        padding: 48px 64px;
       }
     }
 
-    /* ═══════════════════════════════════════════
-       LEFT: Brand panel (shared styles)
-    ═══════════════════════════════════════════ */
+    /* ═══════════════════════════ HERO (left) ══════════════════════ */
     .hero {
       background: var(--yellow);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       padding: 48px 52px;
-      overflow: hidden;
       position: relative;
+      overflow: hidden;
     }
 
-    /* Decorative blocks — kept in corners away from text */
-    .blocks {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .block { position: absolute; border-radius: 4px; }
+    /* blocks layer */
+    .blocks { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .block  { position: absolute; border-radius: 4px; }
 
-    /* top-right cluster */
-    .b1 { width:68px;  height:26px; background:var(--coral); top:44px;  right:140px; }
-    .b2 { width:36px;  height:16px; background:var(--mint);  top:40px;  right:72px;  }
-    .b3 { width:52px;  height:20px; background:var(--blue);  top:78px;  right:44px;  }
-    .b4 { width:22px;  height:38px; background:var(--coral); top:60px;  right:106px; }
-    .b6 { width:44px;  height:18px; background:var(--blue);  top:108px; right:82px;  }
-
-    /* mid-right */
-    .b7 { width:28px;  height:48px; background:var(--coral); top:40%;   right:36px;  }
-    .b8 { width:18px;  height:18px; background:var(--mint);  top:46%;   right:82px;  }
-    .b9 { width:56px;  height:16px; background:var(--blue);  top:52%;   right:52px;  }
-
-    /* bottom cluster */
+    /* top-right */
+    .b1 { width:68px; height:26px; background:var(--coral); top:44px;  right:140px; }
+    .b2 { width:36px; height:16px; background:var(--mint);  top:40px;  right:72px;  }
+    .b3 { width:52px; height:20px; background:var(--blue);  top:78px;  right:44px;  }
+    .b4 { width:22px; height:38px; background:var(--coral); top:60px;  right:106px; }
+    .b6 { width:44px; height:18px; background:var(--blue);  top:108px; right:82px;  }
+    /* mid */
+    .b7 { width:28px; height:48px; background:var(--coral); top:40%;   right:36px;  }
+    .b8 { width:18px; height:18px; background:var(--mint);  top:46%;   right:82px;  }
+    .b9 { width:56px; height:16px; background:var(--blue);  top:52%;   right:52px;  }
+    /* bottom */
     .b10 { width:80px; height:26px; background:var(--coral); bottom:96px;  right:72px;  }
     .b11 { width:22px; height:40px; background:var(--blue);  bottom:76px;  right:172px; }
     .b12 { width:36px; height:14px; background:var(--mint);  bottom:130px; right:124px; }
+    /* left edge */
+    .b14 { width:18px; height:52px; background:var(--coral); top:32%; left:0; border-radius:0 4px 4px 0; }
+    .b15 { width:24px; height:18px; background:var(--mint);  top:58%; left:8px; }
 
-    /* left-edge accents */
-    .b14 { width:18px; height:52px; background:var(--coral); top:32%;   left:0; border-radius:0 4px 4px 0; }
-    .b15 { width:24px; height:18px; background:var(--mint);  top:58%;   left:8px; }
-
-    /* Logo */
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      position: relative;
-      z-index: 2;
-      flex-shrink: 0;
+      display: flex; align-items: center; gap: 10px;
+      position: relative; z-index: 2;
     }
-    .logo img {
-      height: 34px;
-      width: auto;
-    }
+    .logo img { height: 34px; width: auto; }
     .logo-fallback {
       font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900;
-      font-size: 1.8rem;
-      color: var(--black);
-      letter-spacing: -0.04em;
-      line-height: 1;
-      display: none;
+      font-weight: 900; font-size: 1.9rem;
+      color: var(--black); letter-spacing: -0.04em;
+      line-height: 1; display: none;
     }
 
-    /* Headline */
-    .hero-body {
-      position: relative;
-      z-index: 2;
-      flex-shrink: 0;
-    }
+    .hero-body { position: relative; z-index: 2; }
     .hero-body h1 {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 900;
-      font-size: clamp(3.6rem, 5.5vw, 5.5rem);
+      font-size: clamp(3.6rem, 5vw, 5.5rem);
       line-height: 0.93;
       color: var(--black);
       letter-spacing: -0.02em;
@@ -137,115 +101,96 @@
     }
     .hero-body h1 span { color: var(--blue); }
     .hero-body p {
-      font-size: 0.92rem;
-      color: rgba(6,6,9,0.52);
-      font-weight: 500;
-      line-height: 1.55;
+      font-size: 0.92rem; color: rgba(6,6,9,0.52);
+      font-weight: 500; line-height: 1.55;
     }
 
-    /* Footer */
     .hero-footer {
-      position: relative;
-      z-index: 2;
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: rgba(6,6,9,0.32);
-      letter-spacing: 0.04em;
-      flex-shrink: 0;
+      position: relative; z-index: 2;
+      font-size: 0.7rem; font-weight: 500;
+      color: rgba(6,6,9,0.32); letter-spacing: 0.04em;
     }
 
-    /* ═══════════════════════════════════════════
-       RIGHT: Form panel (shared styles)
-    ═══════════════════════════════════════════ */
-    .form-panel {
-      background: var(--white);
-    }
+    /* ═══════════════════════════ FORM (right) ═════════════════════ */
+    .form-panel { background: var(--white); }
 
-    .form-wrap {
-      width: 100%;
-      max-width: 380px;
-      margin: 0 auto;
-    }
+    .form-wrap { width: 100%; max-width: 380px; }
 
     .form-heading {
       font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
-      font-size: 2rem;
-      color: var(--black);
-      letter-spacing: -0.01em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
+      font-weight: 800; font-size: 2rem;
+      color: var(--black); text-transform: uppercase;
+      letter-spacing: -0.01em; margin-bottom: 4px;
     }
-    .form-sub {
-      font-size: 0.85rem;
-      color: #6e6e73;
-      margin-bottom: 28px;
-    }
+    .form-sub { font-size: 0.85rem; color: #6e6e73; margin-bottom: 28px; }
 
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
     .field { display: flex; flex-direction: column; margin-bottom: 12px; }
-    .field label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--black);
-      margin-bottom: 5px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+    .field > label {
+      font-size: 0.7rem; font-weight: 600;
+      color: var(--black); margin-bottom: 5px;
+      letter-spacing: 0.05em; text-transform: uppercase;
     }
     .field input,
     .field select {
-      border: 1.5px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 11px 13px;
-      font-size: 0.9rem;
-      color: var(--black);
-      background: #fafafa;
-      font-family: inherit;
-      outline: none;
+      border: 1.5px solid #e5e7eb; border-radius: 8px;
+      padding: 11px 13px; font-size: 0.9rem;
+      color: var(--black); background: #fafafa;
+      font-family: inherit; outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
       -webkit-appearance: none;
     }
     .field input:focus,
     .field select:focus {
-      border-color: var(--blue);
-      background: var(--white);
+      border-color: var(--blue); background: var(--white);
       box-shadow: 0 0 0 3px rgba(0,86,184,0.1);
     }
     .field select {
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%236e6e73' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 13px center;
-      background-color: #fafafa;
-      padding-right: 32px;
-      cursor: pointer;
+      background-repeat: no-repeat; background-position: right 13px center;
+      background-color: #fafafa; padding-right: 32px; cursor: pointer;
     }
     .field input.error { border-color: #ff3b30; }
     .field input.error:focus { box-shadow: 0 0 0 3px rgba(255,59,48,0.1); }
     .field-error { font-size: 0.71rem; color: #ff3b30; margin-top: 3px; display: none; }
     .field-error.visible { display: block; }
 
+    /* ── Segmented institution picker ── */
+    .seg {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 1.5px solid #e5e7eb; border-radius: 8px;
+      overflow: hidden; background: #fafafa;
+    }
+    .seg input[type="radio"] { display: none; }
+    .seg label {
+      padding: 11px 8px; text-align: center;
+      font-size: 0.88rem; font-weight: 500;
+      color: #6e6e73; cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      border-right: 1.5px solid #e5e7eb;
+      user-select: none;
+    }
+    .seg label:last-child { border-right: none; }
+    .seg input:checked + label {
+      background: var(--blue); color: var(--white); font-weight: 600;
+    }
+
     button[type="submit"] {
-      width: 100%;
-      padding: 13px;
-      background: var(--blue);
-      color: var(--white);
-      border: none;
-      border-radius: 8px;
-      font-size: 0.92rem;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      margin-top: 8px;
-      letter-spacing: 0.02em;
+      width: 100%; padding: 13px;
+      background: var(--blue); color: var(--white);
+      border: none; border-radius: 8px;
+      font-size: 0.92rem; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+      margin-top: 8px; letter-spacing: 0.02em;
       transition: background 0.15s;
     }
     button[type="submit"]:hover { background: #0047a0; }
     button[type="submit"]:active { transform: scale(0.99); }
     button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* ── Success ──────────────────────────────── */
+    /* ── Success ── */
     .success-panel { display: none; flex-direction: column; align-items: center; text-align: center; }
     .success-panel.visible { display: flex; }
     .check-circle {
@@ -258,65 +203,56 @@
     .check-circle svg { width: 30px; height: 30px; }
     @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     .success-panel h2 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800; font-size: 1.6rem;
-      color: var(--black); text-transform: uppercase;
-      letter-spacing: -0.01em; margin-bottom: 8px;
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+      font-size: 1.6rem; color: var(--black);
+      text-transform: uppercase; margin-bottom: 8px;
     }
     .success-panel p { font-size: 0.85rem; color: #6e6e73; line-height: 1.6; }
     .another-btn {
       margin-top: 20px; background: none;
       border: 1.5px solid #e5e7eb; color: var(--blue);
       border-radius: 8px; padding: 9px 22px;
-      font-size: 0.83rem; font-weight: 500; font-family: inherit;
-      cursor: pointer; transition: background 0.15s;
+      font-size: 0.83rem; font-weight: 500;
+      font-family: inherit; cursor: pointer;
     }
     .another-btn:hover { background: #f5f5f7; }
 
-    /* ═══════════════════════════════════════════
-       MOBILE overrides
-    ═══════════════════════════════════════════ */
+    /* ═══════════════════════════ MOBILE ═══════════════════════════ */
     @media (max-width: 819px) {
-      body { display: block; background: var(--yellow); }
+      body { display: block; }
 
       .hero {
-        min-height: auto;
-        padding: 36px 28px 40px;
+        padding: 32px 24px 44px;
         justify-content: flex-start;
-        gap: 28px;
+        gap: 24px;
       }
 
-      /* hide most blocks on mobile — keep only top-right cluster */
+      /* hide most blocks, tiny top-right cluster only */
       .b7,.b8,.b9,.b10,.b11,.b12,.b14,.b15 { display: none; }
-      .b1 { width:52px; height:20px; top:36px;  right:100px; }
-      .b2 { width:28px; height:14px; top:32px;  right:48px; }
-      .b3 { width:40px; height:16px; top:64px;  right:28px; }
-      .b4 { width:18px; height:30px; top:48px;  right:82px; }
-      .b6 { width:36px; height:14px; top:88px;  right:56px; }
+      .b1 { width:48px; height:18px; top:28px;  right:80px; }
+      .b2 { width:24px; height:12px; top:24px;  right:36px; }
+      .b3 { width:36px; height:14px; top:54px;  right:20px; }
+      .b4 { width:16px; height:28px; top:40px;  right:68px; }
+      .b6 { width:32px; height:12px; top:76px;  right:44px; }
 
-      .hero-body h1 { font-size: 3.2rem; margin-bottom: 12px; }
-      .hero-footer { display: none; }
+      .hero-body h1 { font-size: 3rem; margin-bottom: 10px; }
+      .hero-footer  { display: none; }
 
       .form-panel {
-        background: var(--white);
         border-radius: 24px 24px 0 0;
-        padding: 36px 24px 48px;
-        margin-top: 0;
+        padding: 36px 24px 52px;
       }
-
       .form-wrap { max-width: 100%; }
-      .row { grid-template-columns: 1fr 1fr; }
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 380px) {
       .row { grid-template-columns: 1fr; gap: 0; }
-      .hero-body h1 { font-size: 2.8rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- LEFT: Brand hero -->
+  <!-- LEFT: brand -->
   <section class="hero">
     <div class="blocks" aria-hidden="true">
       <div class="block b1"></div><div class="block b2"></div>
@@ -324,28 +260,25 @@
       <div class="block b6"></div><div class="block b7"></div>
       <div class="block b8"></div><div class="block b9"></div>
       <div class="block b10"></div><div class="block b11"></div>
-      <div class="block b12"></div><div class="block b14"></div>
-      <div class="block b15"></div>
+      <div class="block b12"></div>
+      <div class="block b14"></div><div class="block b15"></div>
     </div>
 
     <div class="logo">
-      <img
-        src="/static/brks-logo.png"
-        alt="BRKS Education"
-        onerror="this.style.display='none';document.getElementById('logo-fb').style.display='block'"
-      />
+      <img src="/static/brks-logo.png" alt="BRKS Education"
+           onerror="this.style.display='none';document.getElementById('logo-fb').style.display='block'" />
       <span id="logo-fb" class="logo-fallback">brks</span>
     </div>
 
     <div class="hero-body">
       <h1>Shape<br><span>Tomorrow</span></h1>
-      <p>Where education meets creativity.<br>Apply and take the first step.</p>
+      <p>Where education meets creativity.<br>Take the first step today.</p>
     </div>
 
     <div class="hero-footer">© 2026 BRKS Education</div>
   </section>
 
-  <!-- RIGHT: Form -->
+  <!-- RIGHT: form -->
   <section class="form-panel">
     <div class="form-wrap">
 
@@ -354,6 +287,18 @@
         <div class="form-sub">We'll reach out within 24 hours.</div>
 
         <form id="lead-form" novalidate>
+
+          <!-- Institution type -->
+          <div class="field">
+            <label>Institution type</label>
+            <div class="seg">
+              <input type="radio" name="institution_type" id="type-school" value="School" checked />
+              <label for="type-school">🏫 School</label>
+              <input type="radio" name="institution_type" id="type-nursery" value="Nursery" />
+              <label for="type-nursery">🌱 Nursery</label>
+            </div>
+          </div>
+
           <div class="row">
             <div class="field">
               <label for="first_name">First name</label>
@@ -451,25 +396,17 @@
     }
 
     form.addEventListener('submit', async e => {
-      e.preventDefault();
-      clearErrors();
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending…';
+      e.preventDefault(); clearErrors();
+      submitBtn.disabled = true; submitBtn.textContent = 'Sending…';
       try {
         const res  = await fetch('/submit', { method: 'POST', body: new FormData(form) });
         const data = await res.json();
         if (data.ok) {
           formView.style.display = 'none';
           successView.classList.add('visible');
-        } else {
-          showErrors(data.errors || {});
-        }
-      } catch {
-        showErrors({ email: 'Something went wrong. Please try again.' });
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Get Started';
-      }
+        } else { showErrors(data.errors || {}); }
+      } catch { showErrors({ email: 'Something went wrong. Please try again.' }); }
+      finally { submitBtn.disabled = false; submitBtn.textContent = 'Get Started'; }
     });
 
     anotherBtn.addEventListener('click', () => {

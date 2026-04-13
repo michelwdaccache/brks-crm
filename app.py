@@ -127,7 +127,8 @@ def init_db():
                 utm_term TEXT, utm_content TEXT, created_at TIMESTAMPTZ DEFAULT NOW()
             )""")
             for col, dfn in [("source","TEXT DEFAULT 'Direct'"),("utm_source","TEXT"),
-                ("utm_medium","TEXT"),("utm_campaign","TEXT"),("utm_term","TEXT"),("utm_content","TEXT")]:
+                ("utm_medium","TEXT"),("utm_campaign","TEXT"),("utm_term","TEXT"),("utm_content","TEXT"),
+                ("institution_type","TEXT")]:
                 cur.execute(f"ALTER TABLE contacts ADD COLUMN IF NOT EXISTS {col} {dfn}")
 
             # email_templates
@@ -517,7 +518,8 @@ def submit():
         "utm_medium":   clean_utm(request.form.get("utm_medium")),
         "utm_campaign": clean_utm(request.form.get("utm_campaign")),
         "utm_term":     clean_utm(request.form.get("utm_term")),
-        "utm_content":  clean_utm(request.form.get("utm_content")),
+        "utm_content":      clean_utm(request.form.get("utm_content")),
+        "institution_type": request.form.get("institution_type","").strip() or None,
     }
     errors = validate(data)
     if errors: return jsonify({"ok": False, "errors": errors}), 422
@@ -527,11 +529,12 @@ def submit():
         with conn.cursor() as cur:
             cur.execute(
                 """INSERT INTO contacts (first_name,last_name,email,phone,source,
-                       utm_source,utm_medium,utm_campaign,utm_term,utm_content,created_at)
-                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id""",
+                       utm_source,utm_medium,utm_campaign,utm_term,utm_content,
+                       institution_type,created_at)
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id""",
                 (data["first_name"],data["last_name"],data["email"],data["phone"],data["source"],
                  data["utm_source"],data["utm_medium"],data["utm_campaign"],data["utm_term"],
-                 data["utm_content"],now),
+                 data["utm_content"],data["institution_type"],now),
             )
             contact_id = cur.fetchone()["id"]
         conn.commit()
