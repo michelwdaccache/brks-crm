@@ -157,25 +157,6 @@
     .field-error { font-size: 0.71rem; color: #ff3b30; margin-top: 3px; display: none; }
     .field-error.visible { display: block; }
 
-    /* ── Segmented institution picker ── */
-    .seg {
-      display: grid; grid-template-columns: 1fr 1fr;
-      border: 1.5px solid #e5e7eb; border-radius: 8px;
-      overflow: hidden; background: #fafafa;
-    }
-    .seg input[type="radio"] { display: none; }
-    .seg label {
-      padding: 11px 8px; text-align: center;
-      font-size: 0.88rem; font-weight: 500;
-      color: #6e6e73; cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      border-right: 1.5px solid #e5e7eb;
-      user-select: none;
-    }
-    .seg label:last-child { border-right: none; }
-    .seg input:checked + label {
-      background: var(--blue); color: var(--white); font-weight: 600;
-    }
 
     button[type="submit"] {
       width: 100%; padding: 13px;
@@ -290,13 +271,11 @@
 
           <!-- Institution type -->
           <div class="field">
-            <label>Institution type</label>
-            <div class="seg">
-              <input type="radio" name="institution_type" id="type-school" value="School" checked />
-              <label for="type-school">🏫 School</label>
-              <input type="radio" name="institution_type" id="type-nursery" value="Nursery" />
-              <label for="type-nursery">🌱 Nursery</label>
-            </div>
+            <label for="institution_type">Institution type</label>
+            <select id="institution_type" name="institution_type">
+              <option value="School">School</option>
+              <option value="Nursery">Nursery</option>
+            </select>
           </div>
 
           <div class="row">
